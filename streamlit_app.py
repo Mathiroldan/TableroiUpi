@@ -5,7 +5,7 @@ import streamlit as st
 st.set_page_config(page_title="Dashboard Financiero", page_icon=":bar_chart:", layout="wide")
 
 # Inserción del logo de la empresa
-st.image("logo.png", width=200)  # Asegúrate de tener un archivo 'logo.png' en la misma carpeta que este script
+st.image("Logo iUpi.png", width=200)  # Asegúrate de tener un archivo 'logo.png' en la misma carpeta que este script
 
 # Carga de datos
 data = pd.read_csv("data.csv")
