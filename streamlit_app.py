@@ -55,12 +55,6 @@ perfil_filtro = st.sidebar.multiselect(
             default=usuarios_activos['perfil'].unique()
         )
 
-trimestre_filtro = st.sidebar.multiselect(
-            "Selecciona Trimestre", 
-            options=["2024Q1", "2024Q2", "20204Q3", "20204Q4"], 
-            default=usuarios_activos["2024Q1", "2024Q2", "20204Q3", "20204Q4"]
-        )
-
 # Aplicar los filtros
 usuarios_filtrados = usuarios_activos[
             (usuarios_activos['Edad'].isin(edad_filtro)) & 
