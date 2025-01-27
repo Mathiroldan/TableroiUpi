@@ -114,7 +114,7 @@ st.plotly_chart(fig_bar_franja)
 
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
-dinero_por_mes = usuarios_filtrados.groupby(usuarios_filtrados['Fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
+dinero_por_mes = usuarios_filtrados.groupby(usuarios_filtrados['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
 dinero_por_mes.columns = ['Mes', 'Monto Total']
 dinero_por_mes['Mes'] = dinero_por_mes['Mes'].astype(str)
 fig_line_dinero = px.line(
