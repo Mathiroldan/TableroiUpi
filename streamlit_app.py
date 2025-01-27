@@ -38,8 +38,7 @@ promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
 # Asegurar que las fechas están en el formato correcto
- try:
-        usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
+usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
     except Exception as e:
         st.error(f"Error al convertir la columna 'fecha' a formato datetime: {e}")
 
