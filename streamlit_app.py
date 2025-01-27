@@ -38,43 +38,47 @@ promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
 # Asegurar que las fechas están en el formato correcto
-usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
+ try:
+        usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
+    except Exception as e:
+        st.error(f"Error al convertir la columna 'fecha' a formato datetime: {e}")
 
-# Agregar columna de trimestres
-usuarios_activos['Trimestre'] = usuarios_activos['fecha'].dt.to_period('Q').astype(str)
+    # Agregar columna de trimestres
+    if 'fecha' in usuarios_activos.columns:
+        usuarios_activos['Trimestre'] = usuarios_activos['fecha'].dt.to_period('Q').astype(str)
 
-#Corregir lectura de trimestres
-usuarios_activos['Trimestre'] = usuarios_activos['Trimestre'].str[-2:]
+        # Ajustar los valores de trimestres para que solo muestren Q1, Q2, etc.
+        usuarios_activos['Trimestre'] = usuarios_activos['Trimestre'].str[-2:]
 
-# Sidebar para filtros
-st.sidebar.header("Filtros")
+        # Sidebar para filtros
+        st.sidebar.header("Filtros")
 
-# Filtros disponibles
-edad_filtro = st.sidebar.multiselect(
-    "Selecciona Edad", 
-    options=list(usuarios_activos['Edad'].unique()), 
-    default=list(usuarios_activos['Edad'].unique())
-)
+        # Filtros disponibles
+        edad_filtro = st.sidebar.multiselect(
+            "Selecciona Edad", 
+            options=usuarios_activos['Edad'].unique(), 
+            default=usuarios_activos['Edad'].unique()
+        )
 
-perfil_filtro = st.sidebar.multiselect(
-    "Selecciona Perfil", 
-    options=list(usuarios_activos['perfil'].unique()), 
-    default=list(usuarios_activos['perfil'].unique())
-)
+        perfil_filtro = st.sidebar.multiselect(
+            "Selecciona Perfil", 
+            options=usuarios_activos['perfil'].unique(), 
+            default=usuarios_activos['perfil'].unique()
+        )
 
-trimestre_filtro = st.sidebar.multiselect(
-    "Selecciona Trimestre", 
-    options=list(usuarios_activos['Trimestre'].unique()), 
-    default=list(usuarios_activos['Trimestre'].unique())
-)
+        trimestre_filtro = st.sidebar.multiselect(
+            "Selecciona Trimestre", 
+            options=usuarios_activos['Trimestre'].unique(), 
+            default=usuarios_activos['Trimestre'].unique()
+        )
 
-# Aplicar los filtros
-usuarios_filtrados = usuarios_activos[
-    (usuarios_activos['Edad'].isin(edad_filtro)) & 
-    (usuarios_activos['perfil'].isin(perfil_filtro)) & 
-    (usuarios_activos['Trimestre'].isin(trimestre_filtro))
-]
-
+        # Aplicar los filtros
+        usuarios_filtrados = usuarios_activos[
+            (usuarios_activos['Edad'].isin(edad_filtro)) & 
+            (usuarios_activos['perfil'].isin(perfil_filtro)) & 
+            (usuarios_activos['Trimestre'].isin(trimestre_filtro))
+        ]
+        
 # Gráfico de torta para la distribución por instrumento
 st.subheader("Distribución por Instrumento")
 instrumento_distribucion = usuarios_activos['Instrumento'].value_counts().reset_index()
