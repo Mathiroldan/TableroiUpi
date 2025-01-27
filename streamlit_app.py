@@ -25,6 +25,10 @@ st.metric("Usuarios Totales", total_usuarios)
 usuarios_activos_total = len(usuarios_activos)
 st.metric("Usuarios Activos", usuarios_activos_total)
 
+st.write("Valores reales en Edad:", usuarios_activos['Edad'].unique())
+st.write("Valores reales en Perfil:", usuarios_activos['perfil'].unique())
+st.write("Valores reales en Trimestre:", usuarios_activos['Trimestre'].unique())
+
 # KPI 3: Monto total invertido por usuarios activos
 monto_total_activos = usuarios_activos['monto ARS'].sum()
 st.metric("Monto Total Activos (ARS)", f"${monto_total_activos:,.2f}")
@@ -45,20 +49,20 @@ st.sidebar.header("Filtros")
 # Filtros disponibles
 edad_filtro = st.sidebar.multiselect(
     "Selecciona Edad", 
-    options=usuarios_activos['Edad'].unique(), 
-    default=usuarios_activos['Edad'].unique()
+    options=list(usuarios_activos['Edad'].unique()), 
+    default=list(usuarios_activos['Edad'].unique())
 )
 
 perfil_filtro = st.sidebar.multiselect(
     "Selecciona Perfil", 
-    options=usuarios_activos['perfil'].unique(), 
-    default=usuarios_activos['perfil'].unique()
+    options=list(usuarios_activos['perfil'].unique()), 
+    default=list(usuarios_activos['perfil'].unique())
 )
 
 trimestre_filtro = st.sidebar.multiselect(
     "Selecciona Trimestre", 
-    options=["Q1", "Q2", "Q3", "Q4"], 
-    default=["Q1", "Q2", "Q3", "Q4"]
+    options=list(usuarios_activos['Trimestre'].unique()), 
+    default=list(usuarios_activos['Trimestre'].unique())
 )
 
 # Aplicar los filtros
