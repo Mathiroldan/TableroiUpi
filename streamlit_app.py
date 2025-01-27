@@ -43,6 +43,9 @@ usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d
 # Agregar columna de trimestres
 usuarios_activos['Trimestre'] = usuarios_activos['fecha'].dt.to_period('Q').astype(str)
 
+#Corregir lectura de trimestres
+usuarios_activos['Trimestre'] = usuarios_activos['Trimestre'].str[-2:]
+
 # Sidebar para filtros
 st.sidebar.header("Filtros")
 
