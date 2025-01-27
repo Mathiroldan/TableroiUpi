@@ -56,6 +56,28 @@ st.metric("Monto Total Activos (ARS)", f"${monto_total_activos:,.2f}")
 promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
+# Gráfico de barra para franja etaria
+st.subheader("Franja Etaria de los Usuarios")
+franja_etaria_distribucion = usuarios_filtrados['Edad'].value_counts().reset_index()
+franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
+fig_bar_franja = px.bar(
+    franja_etaria_distribucion, 
+    x='Franja Etaria', 
+    y='Cantidad', 
+    title="Franja Etaria de los Usuarios")
+st.plotly_chart(fig_bar_franja)
+
+# Gráfico de barra para perfil financiero
+st.subheader("Perfil financiero de los Usuarios")
+perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reset_index()
+perfil_distribucion.columns = ['Perfil', 'Cantidad']
+fig_bar_perfil = px.bar(
+    perfil_distribucion, 
+    x='Perfil', 
+    y='Cantidad', 
+    title="Perfil financiero de los Usuarios")
+st.plotly_chart(fig_bar_perfil)
+
 # Gráfico de torta para la distribución por instrumento
 st.subheader("Distribución por Instrumento")
 instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
@@ -88,28 +110,6 @@ fig_pie_razon = px.pie(
     values='Cantidad', 
     title="Razón de Inversión")
 st.plotly_chart(fig_pie_razon)
-
-# Gráfico de barra para franja etaria
-st.subheader("Franja Etaria de los Usuarios")
-franja_etaria_distribucion = usuarios_filtrados['Edad'].value_counts().reset_index()
-franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
-fig_bar_franja = px.bar(
-    franja_etaria_distribucion, 
-    x='Franja Etaria', 
-    y='Cantidad', 
-    title="Franja Etaria de los Usuarios")
-st.plotly_chart(fig_bar_franja)
-
-# Gráfico de barra para perfil financiero
-st.subheader("Perfil financiero de los Usuarios")
-perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reset_index()
-perfil_distribucion.columns = ['Perfil', 'Cantidad']
-fig_bar_perfil = px.bar(
-    perfil_distribucion, 
-    x='Perfil', 
-    y='Cantidad', 
-    title="Perfil financiero de los Usuarios")
-st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
