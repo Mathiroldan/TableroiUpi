@@ -79,7 +79,7 @@ fig_pie_instrumento = px.pie(
     instrumento_distribucion, 
     names='Instrumento', 
     values='Cantidad', 
-    title="Distribución por Instrumento"")
+    title="Distribución por Instrumento")
 st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de torta para objetivos
@@ -90,18 +90,18 @@ fig_pie_objetivos = px.pie(
     objetivos_distribucion, 
     names='Objetivo', 
     values='Cantidad', 
-    title="Distribución de Objetivos"")
+    title="Distribución de Objetivos")
 st.plotly_chart(fig_pie_objetivos)
 
 # Gráfico de torta para razón de inversión
 st.subheader("Razón de Inversión")
-razon_distribucion = usuarios_filtrados['Razon Inversion'].value_counts().reset_index()
+razon_distribucion = usuarios_filtrados['Razon_Inversion'].value_counts().reset_index()
 razon_distribucion.columns = ['Razon', 'Cantidad']
 fig_pie_razon = px.pie(
     razon_distribucion, 
     names='Razon', 
     values='Cantidad', 
-    title="Razón de Inversión"")
+    title="Razón de Inversión")
 st.plotly_chart(fig_pie_razon)
 
 # Gráfico de barra para franja etaria
@@ -112,7 +112,7 @@ fig_bar_franja = px.bar(
     franja_etaria_distribucion, 
     x='Franja Etaria', 
     y='Cantidad', 
-    title="Franja Etaria de los Usuarios"")
+    title="Franja Etaria de los Usuarios")
 st.plotly_chart(fig_bar_franja)
 
 # Gráfico de línea para dinero invertido a lo largo del año
@@ -124,7 +124,7 @@ fig_line_dinero = px.line(
     dinero_por_mes, 
     x='Mes', 
     y='Monto Total', 
-    title="Dinero Invertido a lo Largo del Año"")
+    title="Dinero Invertido a lo Largo del Año")
 st.plotly_chart(fig_line_dinero)
 
 # Mensaje final
