@@ -40,19 +40,12 @@ st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 # Asegurar que las fechas están en el formato correcto
 usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
 
-    # Agregar columna de trimestres
-'fecha' in usuarios_activos.columns:
-        usuarios_activos['Trimestre'] = usuarios_activos['fecha'].dt.to_period('Q').astype(str)
+# Sidebar para filtros
+st.sidebar.header("Filtros")
 
-        # Ajustar los valores de trimestres para que solo muestren Q1, Q2, etc.
-        usuarios_activos['Trimestre'] = usuarios_activos['Trimestre'].str[-2:]
-
-        # Sidebar para filtros
-        st.sidebar.header("Filtros")
-
-        # Filtros disponibles
-        edad_filtro = st.sidebar.multiselect(
-            "Selecciona Edad", 
+# Filtros disponibles
+edad_filtro = st.sidebar.multiselect(
+     "Selecciona Edad", 
             options=usuarios_activos['Edad'].unique(), 
             default=usuarios_activos['Edad'].unique()
         )
@@ -65,11 +58,11 @@ usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d
 
         trimestre_filtro = st.sidebar.multiselect(
             "Selecciona Trimestre", 
-            options=usuarios_activos['Trimestre'].unique(), 
-            default=usuarios_activos['Trimestre'].unique()
+            options=["2024Q1", "2024Q2", "20204Q3", "20204Q4"], 
+            default=usuarios_activos["2024Q1", "2024Q2", "20204Q3", "20204Q4"]
         )
 
-        # Aplicar los filtros
+# Aplicar los filtros
         usuarios_filtrados = usuarios_activos[
             (usuarios_activos['Edad'].isin(edad_filtro)) & 
             (usuarios_activos['perfil'].isin(perfil_filtro)) & 
