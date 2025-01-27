@@ -102,6 +102,17 @@ fig_bar_franja = px.bar(
     title="Franja Etaria de los Usuarios")
 st.plotly_chart(fig_bar_franja)
 
+# Gráfico de barra para franja etaria
+st.subheader("Perfil financiero de los Usuarios")
+perfil_distribucion = usuarios_activos['perfil'].value_counts().reset_index()
+perfil_distribucion.columns = ['Perfil', 'Cantidad']
+fig_bar_franja = px.bar(
+    franja_etaria_distribucion, 
+    x='Perfil', 
+    y='Cantidad', 
+    title="Perfil financiero de los Usuarios")
+st.plotly_chart(fig_bar_franja)
+
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
 dinero_por_mes = usuarios_activos.groupby(usuarios_activos['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
