@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 
 # Configuración inicial de la página
-st.set_page_config(page_title="Dashboard Financiero", page_icon=":bar_chart:", layout="wide")
+st.set_page_config(page_title="Tipos y comportamiento de usuarios", page_icon=":bar_chart:", layout="wide")
 
 # Inserción del logo de la empresa
 st.image("images/Logo iUpi.png", width=200)  # Asegúrate de tener un archivo 'Logo iUpi.png'
@@ -30,8 +30,21 @@ perfil_filtro = st.sidebar.multiselect(
     default=data['perfil'].unique()
 )
 
+# Filtro por rango de fechas
+min_date = data['fecha'].min()
+max_date = data['fecha'].max()
+
+fecha_inicio, fecha_fin = st.sidebar.date_input(
+    "Selecciona un rango de fechas",
+    value=(min_date, max_date),
+    min_value=min_date,
+    max_value=max_date
+)
+
 # Aplicar los filtros a todos los usuarios
 usuarios_filtrados = data[
+    (data['fecha'] >= pd.Timestamp(fecha_inicio)) &
+    (data['fecha'] <= pd.Timestamp(fecha_fin)) &
     (data['Edad'].isin(edad_filtro)) & 
     (data['perfil'].isin(perfil_filtro))
 ]
