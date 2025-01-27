@@ -50,13 +50,13 @@ edad_filtro = st.sidebar.multiselect(
             default=usuarios_activos['Edad'].unique()
         )
 
-        perfil_filtro = st.sidebar.multiselect(
+perfil_filtro = st.sidebar.multiselect(
             "Selecciona Perfil", 
             options=usuarios_activos['perfil'].unique(), 
             default=usuarios_activos['perfil'].unique()
         )
 
-        trimestre_filtro = st.sidebar.multiselect(
+trimestre_filtro = st.sidebar.multiselect(
             "Selecciona Trimestre", 
             options=["2024Q1", "2024Q2", "20204Q3", "20204Q4"], 
             default=usuarios_activos["2024Q1", "2024Q2", "20204Q3", "20204Q4"]
