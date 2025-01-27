@@ -17,6 +17,22 @@ usuarios_activos = data[(data['monto ARS'] > 0) & (data['Instrumento'].notna())]
 # KPIs
 st.title("Dashboard Financiero")
 
+# KPI 1: Total de usuarios (incluye activos e inactivos)
+total_usuarios = len(data)
+st.metric("Usuarios Totales", total_usuarios)
+
+# KPI 2: Total de usuarios activos
+usuarios_activos_total = len(usuarios_activos)
+st.metric("Usuarios Activos", usuarios_activos_total)
+
+# KPI 3: Monto total invertido por usuarios activos
+monto_total_activos = usuarios_activos['monto ARS'].sum()
+st.metric("Monto Total Activos (ARS)", f"${monto_total_activos:,.2f}")
+
+# KPI 4: Promedio de monto invertido por usuario activo
+promedio_monto_activos = usuarios_activos['monto ARS'].mean()
+st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
+
 # Asegurar que las fechas están en el formato correcto
 usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
 
