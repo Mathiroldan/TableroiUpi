@@ -34,7 +34,7 @@ promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
 # Asegurar que las fechas están en el formato correcto
-usuarios_activos['Fecha'] = pd.to_datetime(usuarios_activos['Fecha'], format='%d/%m/%Y')
+usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
 
 # Agregar columna de trimestres
 usuarios_activos['Trimestre'] = usuarios_activos['Fecha'].dt.to_period('Q').astype(str)
@@ -81,7 +81,7 @@ st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de torta para objetivos
 st.subheader("Objetivos de los Usuarios")
-objetivos_distribucion = usuarios_filtrados['Objetivo'].value_counts().reset_index()
+objetivos_distribucion = usuarios_filtrados['objetivo'].value_counts().reset_index()
 objetivos_distribucion.columns = ['Objetivo', 'Cantidad']
 fig_pie_objetivos = px.pie(
     objetivos_distribucion, 
@@ -92,7 +92,7 @@ st.plotly_chart(fig_pie_objetivos)
 
 # Gráfico de torta para razón de inversión
 st.subheader("Razón de Inversión")
-razon_distribucion = usuarios_filtrados['Razon_Inversion'].value_counts().reset_index()
+razon_distribucion = usuarios_filtrados['razon_inversion'].value_counts().reset_index()
 razon_distribucion.columns = ['Razon', 'Cantidad']
 fig_pie_razon = px.pie(
     razon_distribucion, 
