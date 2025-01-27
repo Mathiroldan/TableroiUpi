@@ -102,16 +102,16 @@ fig_bar_franja = px.bar(
     title="Franja Etaria de los Usuarios")
 st.plotly_chart(fig_bar_franja)
 
-# Gráfico de barra para franja etaria
+# Gráfico de barra para perfil financiero
 st.subheader("Perfil financiero de los Usuarios")
 perfil_distribucion = usuarios_activos['perfil'].value_counts().reset_index()
 perfil_distribucion.columns = ['Perfil', 'Cantidad']
-fig_bar_franja = px.bar(
-    franja_etaria_distribucion, 
+fig_bar_perfil = px.bar(
+    perfil_distribucion, 
     x='Perfil', 
     y='Cantidad', 
     title="Perfil financiero de los Usuarios")
-st.plotly_chart(fig_bar_franja)
+st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
