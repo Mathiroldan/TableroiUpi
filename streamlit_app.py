@@ -37,7 +37,7 @@ st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
 
 # Agregar columna de trimestres
-usuarios_activos['Trimestre'] = usuarios_activos['Fecha'].dt.to_period('Q').astype(str)
+usuarios_activos['Trimestre'] = usuarios_activos['fecha'].dt.to_period('Q').astype(str)
 
 # Sidebar para filtros
 st.sidebar.header("Filtros")
