@@ -70,7 +70,7 @@ usuarios_filtrados = usuarios_activos[
 
 # Gráfico de torta para la distribución por instrumento
 st.subheader("Distribución por Instrumento")
-instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
+instrumento_distribucion = usuarios_activos['Instrumento'].value_counts().reset_index()
 instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
 fig_pie_instrumento = px.pie(
     instrumento_distribucion, 
@@ -81,7 +81,7 @@ st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de torta para objetivos
 st.subheader("Objetivos de los Usuarios")
-objetivos_distribucion = usuarios_filtrados['objetivo'].value_counts().reset_index()
+objetivos_distribucion = usuarios_activos['objetivo'].value_counts().reset_index()
 objetivos_distribucion.columns = ['Objetivo', 'Cantidad']
 fig_pie_objetivos = px.pie(
     objetivos_distribucion, 
@@ -92,7 +92,7 @@ st.plotly_chart(fig_pie_objetivos)
 
 # Gráfico de torta para razón de inversión
 st.subheader("Razón de Inversión")
-razon_distribucion = usuarios_filtrados['razon_inversion'].value_counts().reset_index()
+razon_distribucion = usuarios_activos['razon_inversion'].value_counts().reset_index()
 razon_distribucion.columns = ['Razon', 'Cantidad']
 fig_pie_razon = px.pie(
     razon_distribucion, 
@@ -103,7 +103,7 @@ st.plotly_chart(fig_pie_razon)
 
 # Gráfico de barra para franja etaria
 st.subheader("Franja Etaria de los Usuarios")
-franja_etaria_distribucion = usuarios_filtrados['Edad'].value_counts().reset_index()
+franja_etaria_distribucion = usuarios_activos['Edad'].value_counts().reset_index()
 franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
 fig_bar_franja = px.bar(
     franja_etaria_distribucion, 
@@ -114,7 +114,7 @@ st.plotly_chart(fig_bar_franja)
 
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
-dinero_por_mes = usuarios_filtrados.groupby(usuarios_filtrados['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
+dinero_por_mes = usuarios_activos.groupby(usuarios_filtrados['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
 dinero_por_mes.columns = ['Mes', 'Monto Total']
 dinero_por_mes['Mes'] = dinero_por_mes['Mes'].astype(str)
 fig_line_dinero = px.line(
@@ -126,7 +126,7 @@ st.plotly_chart(fig_line_dinero)
 
 # Mensaje final
 st.write("### Datos filtrados")
-st.dataframe(usuarios_filtrados)
+st.dataframe(usuarios_activos)
 
 # Esconder "Hecho con Streamlit"
 hide_streamlit_style = """
