@@ -63,7 +63,7 @@ trimestre_filtro = st.sidebar.multiselect(
         )
 
 # Aplicar los filtros
-        usuarios_filtrados = usuarios_activos[
+usuarios_filtrados = usuarios_activos[
             (usuarios_activos['Edad'].isin(edad_filtro)) & 
             (usuarios_activos['perfil'].isin(perfil_filtro)) & 
             (usuarios_activos['Trimestre'].isin(trimestre_filtro))
