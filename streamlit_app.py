@@ -25,9 +25,6 @@ st.metric("Usuarios Totales", total_usuarios)
 usuarios_activos_total = len(usuarios_activos)
 st.metric("Usuarios Activos", usuarios_activos_total)
 
-st.write("Valores reales en Edad:", usuarios_activos['Edad'].unique())
-st.write("Valores reales en Perfil:", usuarios_activos['perfil'].unique())
-
 # KPI 3: Monto total invertido por usuarios activos
 monto_total_activos = usuarios_activos['monto ARS'].sum()
 st.metric("Monto Total Activos (ARS)", f"${monto_total_activos:,.2f}")
