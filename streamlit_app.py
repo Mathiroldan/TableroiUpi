@@ -11,8 +11,30 @@ st.image("images/Logo iUpi.png", width=200)  # Asegúrate de tener un archivo 'L
 # Carga de datos
 data = pd.read_csv("data.csv")
 
-# Filtrar datos con montos mayores a 0 y eliminar filas con columna 'Instrumento' vacía
-usuarios_activos = data[(data['monto ARS'] > 0) & (data['Instrumento'].notna())]
+# Asegurar que las fechas están en el formato correcto
+data['fecha'] = pd.to_datetime(data['fecha'], format='%d/%m/%Y')
+
+# Sidebar para filtros
+st.sidebar.header("Filtros")
+
+# Filtros disponibles
+edad_filtro = st.sidebar.multiselect(
+    "Selecciona Edad", 
+    options=data['Edad'].unique(), 
+    default=data['Edad'].unique()
+)
+
+perfil_filtro = st.sidebar.multiselect(
+    "Selecciona Perfil", 
+    options=data['perfil'].unique(), 
+    default=data['perfil'].unique()
+)
+
+# Aplicar los filtros a todos los usuarios
+usuarios_filtrados = data[
+    (data['Edad'].isin(edad_filtro)) & 
+    (data['perfil'].isin(perfil_filtro))
+]
 
 # KPIs
 st.title("Dashboard Financiero")
@@ -22,6 +44,7 @@ total_usuarios = len(data)
 st.metric("Usuarios Totales", total_usuarios)
 
 # KPI 2: Total de usuarios activos
+usuarios_activos = data[(data['monto ARS'] > 0) & (data['Instrumento'].notna())]
 usuarios_activos_total = len(usuarios_activos)
 st.metric("Usuarios Activos", usuarios_activos_total)
 
@@ -33,34 +56,9 @@ st.metric("Monto Total Activos (ARS)", f"${monto_total_activos:,.2f}")
 promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
-# Asegurar que las fechas están en el formato correcto
-usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'], format='%d/%m/%Y')
-
-# Sidebar para filtros
-st.sidebar.header("Filtros")
-
-# Filtros disponibles
-edad_filtro = st.sidebar.multiselect(
-     "Selecciona Edad", 
-            options=usuarios_activos['Edad'].unique(), 
-            default=usuarios_activos['Edad'].unique()
-        )
-
-perfil_filtro = st.sidebar.multiselect(
-            "Selecciona Perfil", 
-            options=usuarios_activos['perfil'].unique(), 
-            default=usuarios_activos['perfil'].unique()
-        )
-
-# Aplicar los filtros
-usuarios_filtrados = usuarios_activos[
-            (usuarios_activos['Edad'].isin(edad_filtro)) & 
-            (usuarios_activos['perfil'].isin(perfil_filtro))
-        ]
-        
 # Gráfico de torta para la distribución por instrumento
 st.subheader("Distribución por Instrumento")
-instrumento_distribucion = usuarios_activos['Instrumento'].value_counts().reset_index()
+instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
 instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
 fig_pie_instrumento = px.pie(
     instrumento_distribucion, 
@@ -71,7 +69,7 @@ st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de torta para objetivos
 st.subheader("Objetivos de los Usuarios")
-objetivos_distribucion = usuarios_activos['objetivo'].value_counts().reset_index()
+objetivos_distribucion = usuarios_filtrados['objetivo'].value_counts().reset_index()
 objetivos_distribucion.columns = ['Objetivo', 'Cantidad']
 fig_pie_objetivos = px.pie(
     objetivos_distribucion, 
@@ -82,7 +80,7 @@ st.plotly_chart(fig_pie_objetivos)
 
 # Gráfico de torta para razón de inversión
 st.subheader("Razón de Inversión")
-razon_distribucion = usuarios_activos['razon_inversion'].value_counts().reset_index()
+razon_distribucion = usuarios_filtrados['razon_inversion'].value_counts().reset_index()
 razon_distribucion.columns = ['Razon', 'Cantidad']
 fig_pie_razon = px.pie(
     razon_distribucion, 
@@ -93,7 +91,7 @@ st.plotly_chart(fig_pie_razon)
 
 # Gráfico de barra para franja etaria
 st.subheader("Franja Etaria de los Usuarios")
-franja_etaria_distribucion = usuarios_activos['Edad'].value_counts().reset_index()
+franja_etaria_distribucion = usuarios_filtrados['Edad'].value_counts().reset_index()
 franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
 fig_bar_franja = px.bar(
     franja_etaria_distribucion, 
@@ -104,7 +102,7 @@ st.plotly_chart(fig_bar_franja)
 
 # Gráfico de barra para perfil financiero
 st.subheader("Perfil financiero de los Usuarios")
-perfil_distribucion = usuarios_activos['perfil'].value_counts().reset_index()
+perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reset_index()
 perfil_distribucion.columns = ['Perfil', 'Cantidad']
 fig_bar_perfil = px.bar(
     perfil_distribucion, 
@@ -115,7 +113,7 @@ st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
-dinero_por_mes = usuarios_activos.groupby(usuarios_activos['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
+dinero_por_mes = usuarios_filtrados.groupby(usuarios_filtrados['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
 dinero_por_mes.columns = ['Mes', 'Monto Total']
 dinero_por_mes['Mes'] = dinero_por_mes['Mes'].astype(str)
 fig_line_dinero = px.line(
@@ -124,10 +122,6 @@ fig_line_dinero = px.line(
     y='Monto Total', 
     title="Dinero Invertido a lo Largo del Año")
 st.plotly_chart(fig_line_dinero)
-
-# Mensaje final
-st.write("### Datos filtrados")
-st.dataframe(usuarios_activos)
 
 # Esconder "Hecho con Streamlit"
 hide_streamlit_style = """
