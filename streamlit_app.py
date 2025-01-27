@@ -27,7 +27,6 @@ st.metric("Usuarios Activos", usuarios_activos_total)
 
 st.write("Valores reales en Edad:", usuarios_activos['Edad'].unique())
 st.write("Valores reales en Perfil:", usuarios_activos['perfil'].unique())
-st.write("Valores reales en Trimestre:", usuarios_activos['Trimestre'].unique())
 
 # KPI 3: Monto total invertido por usuarios activos
 monto_total_activos = usuarios_activos['monto ARS'].sum()
@@ -65,8 +64,7 @@ trimestre_filtro = st.sidebar.multiselect(
 # Aplicar los filtros
 usuarios_filtrados = usuarios_activos[
             (usuarios_activos['Edad'].isin(edad_filtro)) & 
-            (usuarios_activos['perfil'].isin(perfil_filtro)) & 
-            (usuarios_activos['Trimestre'].isin(trimestre_filtro))
+            (usuarios_activos['perfil'].isin(perfil_filtro))
         ]
         
 # Gráfico de torta para la distribución por instrumento
