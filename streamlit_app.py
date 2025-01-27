@@ -34,56 +34,83 @@ promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
 # Filtros por edad, perfil y trimestre
-st.sidebar.title("Filtros")
-edad_filtro = st.sidebar.multiselect("Selecciona franja etaria:", data['Edad'].unique())
-perfil_filtro = st.sidebar.multiselect("Selecciona perfil:", data['perfil'].unique())
-trimestre_filtro = st.sidebar.multiselect("Selecciona trimestre:", ["Q1", "Q2", "Q3", "Q4"])
+# Filtros
+st.sidebar.header("Filtros")
 
-# Aplicar filtros
-if edad_filtro:
-    data = data[data['Edad'].isin(edad_filtro)]
-if perfil_filtro:
-    data = data[data['perfil'].isin(perfil_filtro)]
-if trimestre_filtro:
-    data['trimestre'] = pd.to_datetime(data['fecha']).dt.quarter
-    data = data[data['trimestre'].isin([int(q[-1]) for q in trimestre_filtro])]
+# Filtrar por edad
+edad_filtro = st.sidebar.multiselect("Selecciona Edad", options=usuarios_activos['Edad'].unique(), default=usuarios_activos['Edad'].unique())
+
+# Filtrar por perfil
+perfil_filtro = st.sidebar.multiselect("Selecciona Perfil", options=usuarios_activos['perfil'].unique(), default=usuarios_activos['perfil'].unique())
+
+# Filtrar por trimestre
+trimestre_filtro = st.sidebar.multiselect(
+    "Selecciona Trimestre", 
+    options=usuarios_activos['Fecha'].dt.to_period('Q').unique(), 
+    default=usuarios_activos['Fecha'].dt.to_period('Q').unique()
+)
+
+# Aplicar los filtros
+usuarios_filtrados = usuarios_activos[
+    (usuarios_activos['Edad'].isin(edad_filtro)) & 
+    (usuarios_activos['perfil'].isin(perfil_filtro)) & 
+    (usuarios_activos['Fecha'].dt.to_period('Q').isin(trimestre_filtro))
+]
 
 # Gráficos
-# 1. Gráfico Treemap o de Torta: Distribución por Instrumento Financiero
-st.subheader("Distribución por Instrumento Financiero")
-instrumento_distribucion = usuarios_activos['Instrumento'].value_counts()
-try:
-    fig_treemap = px.treemap(instrumento_distribucion.reset_index(), path=['index'], values='Instrumento')
-    st.plotly_chart(fig_treemap)
-except Exception:
-    fig_pie = px.pie(instrumento_distribucion.reset_index(), names='index', values='Instrumento')
-    st.plotly_chart(fig_pie)
+# 1. Gráfico de Torta: Distribución por Instrumento Financiero
+st.subheader("Distribución por Instrumento")
+
+instrumento_distribucion = usuarios_activos['Instrumento'].value_counts().reset_index()
+instrumento_distribucion.columns = ['Instrumento', 'Cantidad']  # Renombrar columnas
+
+fig_pie = px.pie(instrumento_distribucion, names='Instrumento', values='Cantidad', title="Distribución por Instrumento")
+st.plotly_chart(fig_pie)
+
 
 # 2. Gráfico de Torta: Objetivos de los Usuarios
 st.subheader("Objetivos de los Usuarios")
-objetivos_distribucion = usuarios_activos['objetivo'].value_counts()
-fig_objetivos = px.pie(objetivos_distribucion.reset_index(), names='index', values='objetivo')
+
+objetivos_distribucion = usuarios_activos['Objetivo'].value_counts().reset_index()
+objetivos_distribucion.columns = ['Objetivo', 'Cantidad']
+
+fig_objetivos = px.pie(objetivos_distribucion, names='Objetivo', values='Cantidad', title="Distribución de Objetivos")
 st.plotly_chart(fig_objetivos)
 
 # 3. Gráfico de Torta: Razón de Inversión
+# Gráfico de torta para razón de inversión
 st.subheader("Razón de Inversión")
-razon_inversion_distribucion = usuarios_activos['razon_inversion'].value_counts()
-fig_razon = px.pie(razon_inversion_distribucion.reset_index(), names='index', values='razon_inversion')
+
+razon_distribucion = usuarios_activos['Razon Inversion'].value_counts().reset_index()
+razon_distribucion.columns = ['Razon', 'Cantidad']
+
+fig_razon = px.pie(razon_distribucion, names='Razon', values='Cantidad', title="Razón de Inversión")
 st.plotly_chart(fig_razon)
 
 # 4. Gráfico de Barras: Franja Etaria
+# Gráfico de barra para franja etaria
 st.subheader("Franja Etaria de los Usuarios")
-franja_etaria_distribucion = usuarios_activos['Edad'].value_counts().sort_index()
-fig_franja = px.bar(franja_etaria_distribucion.reset_index(), x='index', y='Edad', labels={'index': 'Franja Etaria', 'Edad': 'Cantidad de Usuarios'})
-st.plotly_chart(fig_franja)
+
+franja_etaria_distribucion = usuarios_activos['Edad'].value_counts().reset_index()
+franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
+
+fig_franja_etaria = px.bar(franja_etaria_distribucion, x='Franja Etaria', y='Cantidad', title="Franja Etaria de los Usuarios")
+st.plotly_chart(fig_franja_etaria)
 
 # 5. Gráfico de Línea: Dinero Invertido a lo Largo del Año
+# Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
-usuarios_activos['fecha'] = pd.to_datetime(usuarios_activos['fecha'])
-usuarios_activos['mes'] = usuarios_activos['fecha'].dt.to_period('M').astype(str)
-dinero_mensual = usuarios_activos.groupby('mes')['monto ARS'].sum().reset_index()
-fig_linea = px.line(dinero_mensual, x='mes', y='monto ARS', labels={'mes': 'Mes', 'monto ARS': 'Monto Total (ARS)'})
-st.plotly_chart(fig_linea)
+
+# Asegúrate de que las fechas estén en formato datetime
+usuarios_activos['Fecha'] = pd.to_datetime(usuarios_activos['Fecha'], format='%d/%m/%Y')
+
+# Agrupar por mes y sumar los montos
+dinero_por_mes = usuarios_activos.groupby(usuarios_activos['Fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
+dinero_por_mes.columns = ['Mes', 'Monto Total']
+dinero_por_mes['Mes'] = dinero_por_mes['Mes'].astype(str)  # Convertir a string para usar en gráficos
+
+fig_dinero = px.line(dinero_por_mes, x='Mes', y='Monto Total', title="Dinero Invertido a lo Largo del Año")
+st.plotly_chart(fig_dinero)
 
 # Esconder "Hecho con Streamlit"
 hide_streamlit_style = """
