@@ -79,20 +79,24 @@ franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
 fig_bar_franja = px.bar(
     franja_etaria_distribucion, 
     x='Franja Etaria', 
-    y='Cantidad', 
-    title="Franja Etaria de los Usuarios",
+    y='Cantidad',
     labels={'Cantidad': 'Número de Usuarios', 'Franja Etaria': 'Edad'}
 )
 st.plotly_chart(fig_bar_franja)
 
 # Gráfico de barra para perfil financiero
 st.subheader("Perfil financiero de los Usuarios")
-perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reset_index()
+# Definir el orden deseado para los perfiles
+orden_perfil = ['conservador', 'moderado', 'agresivo']
+perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reindex(orden_perfil).reset_index()
 perfil_distribucion.columns = ['Perfil', 'Cantidad']
+
 fig_bar_perfil = px.bar(
     perfil_distribucion, 
     x='Perfil', 
-    y='Cantidad')
+    y='Cantidad',
+    labels={'Cantidad': 'Número de Usuarios', 'Perfil': 'Perfil Financiero'}
+)
 st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de torta para la distribución por instrumento
