@@ -94,16 +94,6 @@ fig_bar_perfil = px.bar(
     y='Cantidad')
 st.plotly_chart(fig_bar_perfil)
 
-# Gráfico de torta para la distribución por instrumento
-st.subheader("Distribución por Instrumento")
-instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
-instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
-fig_pie_instrumento = px.pie(
-    instrumento_distribucion, 
-    names='Instrumento', 
-    values='Cantidad')
-st.plotly_chart(fig_pie_instrumento)
-
 # Gráfico de torta para objetivos
 st.subheader("Objetivos de los Usuarios")
 objetivos_distribucion = usuarios_filtrados['objetivo'].value_counts().reset_index()
@@ -134,6 +124,16 @@ fig_line_dinero = px.line(
     x='Mes', 
     y='Monto Total')
 st.plotly_chart(fig_line_dinero)
+
+# Gráfico de torta para la distribución por instrumento
+st.subheader("Distribución por Instrumento")
+instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
+instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
+fig_pie_instrumento = px.pie(
+    instrumento_distribucion, 
+    names='Instrumento', 
+    values='Cantidad')
+st.plotly_chart(fig_pie_instrumento)
 
 # Esconder "Hecho con Streamlit"
 hide_streamlit_style = """
