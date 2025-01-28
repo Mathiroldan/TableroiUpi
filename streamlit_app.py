@@ -143,6 +143,25 @@ fig_pie_instrumento = px.pie(
     values='Cantidad')
 st.plotly_chart(fig_pie_instrumento)
 
+# Gráfico de barra para dinero invertido por instrumento
+st.subheader("Dinero Invertido por Instrumento")
+dinero_por_instrumento = usuarios_filtrados.groupby('Instrumento')['monto ARS'].sum().reset_index()
+dinero_por_instrumento.columns = ['Instrumento', 'Monto Total']
+dinero_por_instrumento = dinero_por_instrumento.sort_values(by='Monto Total', ascending=False)  # Ordenar por monto
+
+fig_bar_instrumento = px.bar(
+    dinero_por_instrumento,
+    x='Instrumento',
+    y='Monto Total',
+    title="Dinero Invertido por Instrumento",
+    text='Monto Total',  # Mostrar valores sobre las barras
+    labels={'Instrumento': 'Instrumento Financiero', 'Monto Total': 'Monto Total (ARS)'},
+    color='Monto Total',  # Escala de colores basada en los montos
+    color_continuous_scale='Viridis'
+)
+fig_bar_instrumento.update_traces(texttemplate='%{text:.2s}', textposition='outside')  # Formato de texto
+st.plotly_chart(fig_bar_instrumento)
+
 # Esconder "Hecho con Streamlit"
 hide_streamlit_style = """
     <style>
