@@ -70,13 +70,19 @@ promedio_monto_activos = usuarios_activos['monto ARS'].mean()
 st.metric("Promedio Monto Activos (ARS)", f"${promedio_monto_activos:,.2f}")
 
 # Gráfico de barra para franja etaria
-st.subheader("Franja Etaria de los Usuarios")
-franja_etaria_distribucion = usuarios_filtrados['Edad'].value_counts().reset_index()
+st.subheader("Franja etaria de los usuarios")
+# Definir el orden deseado para las franjas etarias
+orden_edad = ['menos de 25 años', 'entre 26 y 35 años', 'entre 36 y 45 años', 'más de 46 años']
+franja_etaria_distribucion = usuarios_filtrados['Edad'].value_counts().reindex(orden_edad).reset_index()
 franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
+
 fig_bar_franja = px.bar(
     franja_etaria_distribucion, 
     x='Franja Etaria', 
-    y='Cantidad')
+    y='Cantidad', 
+    title="Franja Etaria de los Usuarios",
+    labels={'Cantidad': 'Número de Usuarios', 'Franja Etaria': 'Edad'}
+)
 st.plotly_chart(fig_bar_franja)
 
 # Gráfico de barra para perfil financiero
