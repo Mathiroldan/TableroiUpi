@@ -109,7 +109,7 @@ st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de torta para la distribución por instrumento
 st.subheader("Distribución por Instrumento")
-instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
+instrumento_distribucion = total_usuarios['Instrumento'].value_counts().reset_index()
 instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
 fig_pie_instrumento = px.pie(
     instrumento_distribucion, 
