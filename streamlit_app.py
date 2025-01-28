@@ -50,7 +50,7 @@ usuarios_filtrados = data[
 ]
 
 # KPIs
-st.title("Dashboard Financiero")
+st.title("Tipos y comportamientos de usuarios")
 
 # KPI 1: Total de usuarios (incluye activos e inactivos)
 total_usuarios = len(data)
@@ -76,8 +76,7 @@ franja_etaria_distribucion.columns = ['Franja Etaria', 'Cantidad']
 fig_bar_franja = px.bar(
     franja_etaria_distribucion, 
     x='Franja Etaria', 
-    y='Cantidad', 
-    title="Franja Etaria de los Usuarios")
+    y='Cantidad')
 st.plotly_chart(fig_bar_franja)
 
 # Gráfico de barra para perfil financiero
