@@ -88,13 +88,22 @@ st.plotly_chart(fig_bar_franja)
 st.subheader("Perfil financiero de los Usuarios")
 # Definir el orden deseado para los perfiles
 orden_perfil = ['conservador', 'moderado', 'agresivo']
-perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reindex(orden_perfil).reset_index()
+
+# Asegurar que los valores de la columna 'perfil' estén en el orden deseado
+perfil_distribucion = usuarios_filtrados['perfil'].value_counts()
+
+# Agregar las categorías faltantes con valor 0 si no están presentes
+perfil_distribucion = perfil_distribucion.reindex(orden_perfil, fill_value=0).reset_index()
+
+# Renombrar columnas para el gráfico
 perfil_distribucion.columns = ['Perfil', 'Cantidad']
 
+# Crear gráfico de barras
 fig_bar_perfil = px.bar(
     perfil_distribucion, 
     x='Perfil', 
-    y='Cantidad',
+    y='Cantidad', 
+    title="Perfil Financiero de los Usuarios",
     labels={'Cantidad': 'Número de Usuarios', 'Perfil': 'Perfil Financiero'}
 )
 st.plotly_chart(fig_bar_perfil)
