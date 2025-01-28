@@ -104,15 +104,23 @@ fig_pie_objetivos = px.pie(
     values='Cantidad')
 st.plotly_chart(fig_pie_objetivos)
 
-# Gráfico de torta para razón de inversión
+# Gráfico de treemap para razón de inversión
 st.subheader("Razón de Inversión")
 razon_distribucion = usuarios_filtrados['razon_inversion'].value_counts().reset_index()
 razon_distribucion.columns = ['Razon', 'Cantidad']
-fig_pie_razon = px.pie(
-    razon_distribucion, 
-    names='Razon', 
-    values='Cantidad')
-st.plotly_chart(fig_pie_razon)
+
+# Crear el treemap
+fig_treemap_razon = px.treemap(
+    razon_distribucion,
+    path=['Razon'],  # Nivel jerárquico (razón)
+    values='Cantidad', 
+    color='Cantidad',  # Escala de color basada en la cantidad
+    color_continuous_scale='Blues'  # Personalizar escala de colores
+)
+
+# Mostrar el treemap
+st.plotly_chart(fig_treemap_razon)
+
 
 # Gráfico de línea para dinero invertido a lo largo del año
 st.subheader("Dinero Invertido a lo Largo del Año")
