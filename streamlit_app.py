@@ -59,7 +59,7 @@ st.metric("Usuarios Totales", total_usuarios)
 # KPI 2: Total de usuarios activos
 usuarios_activos = data[(data['monto ARS'] > 0) & (data['Instrumento'].notna())]
 usuarios_activos_total = len(usuarios_activos)
-st.metric("Usuarios Activos", usuarios_activos_total)
+st.metric("Usuarios Activos (que invirtieron alguna vez)", usuarios_activos_total)
 
 # KPI 3: Monto total invertido por usuarios activos
 monto_total_activos = usuarios_activos['monto ARS'].sum()
@@ -86,8 +86,7 @@ perfil_distribucion.columns = ['Perfil', 'Cantidad']
 fig_bar_perfil = px.bar(
     perfil_distribucion, 
     x='Perfil', 
-    y='Cantidad', 
-    title="Perfil financiero de los Usuarios")
+    y='Cantidad')
 st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de torta para la distribución por instrumento
@@ -97,8 +96,7 @@ instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
 fig_pie_instrumento = px.pie(
     instrumento_distribucion, 
     names='Instrumento', 
-    values='Cantidad', 
-    title="Distribución por Instrumento")
+    values='Cantidad')
 st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de torta para objetivos
@@ -108,8 +106,7 @@ objetivos_distribucion.columns = ['Objetivo', 'Cantidad']
 fig_pie_objetivos = px.pie(
     objetivos_distribucion, 
     names='Objetivo', 
-    values='Cantidad', 
-    title="Distribución de Objetivos")
+    values='Cantidad')
 st.plotly_chart(fig_pie_objetivos)
 
 # Gráfico de torta para razón de inversión
@@ -119,8 +116,7 @@ razon_distribucion.columns = ['Razon', 'Cantidad']
 fig_pie_razon = px.pie(
     razon_distribucion, 
     names='Razon', 
-    values='Cantidad', 
-    title="Razón de Inversión")
+    values='Cantidad')
 st.plotly_chart(fig_pie_razon)
 
 # Gráfico de línea para dinero invertido a lo largo del año
@@ -131,8 +127,7 @@ dinero_por_mes['Mes'] = dinero_por_mes['Mes'].astype(str)
 fig_line_dinero = px.line(
     dinero_por_mes, 
     x='Mes', 
-    y='Monto Total', 
-    title="Dinero Invertido a lo Largo del Año")
+    y='Monto Total')
 st.plotly_chart(fig_line_dinero)
 
 # Esconder "Hecho con Streamlit"
