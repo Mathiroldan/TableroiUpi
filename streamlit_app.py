@@ -15,7 +15,7 @@ data = pd.read_csv("data.csv")
 data['fecha'] = pd.to_datetime(data['fecha'], format='%d/%m/%Y')
 
 # Sidebar para filtros
-st.sidebar.header("Filtros")
+st.sidebar.header("iUpi, Ahorro & Inversiones")
 
 # Sidebar para filtros
 st.sidebar.header("Filtros")
