@@ -6,7 +6,7 @@ import plotly.express as px
 st.set_page_config(page_title="Tipos y comportamiento de usuarios", page_icon=":bar_chart:", layout="wide")
 
 # Inserción del logo de la empresa
-st.image("images/Logo iUpi.png", width=200)  # Asegúrate de tener un archivo 'Logo iUpi.png'
+st.image("images/Logo iUpi.png", width=200)
 
 # Carga de datos
 data = pd.read_csv("data.csv")
@@ -17,17 +17,18 @@ data['fecha'] = pd.to_datetime(data['fecha'], format='%d/%m/%Y')
 # Sidebar para filtros
 st.sidebar.header("Filtros")
 
-# Filtros disponibles
-edad_filtro = st.sidebar.multiselect(
+# Sidebar para filtros
+st.sidebar.header("Filtros")
+
+# Filtros con listas desplegables
+edad_filtro = st.sidebar.selectbox(
     "Selecciona Edad", 
-    options=data['Edad'].unique(), 
-    default=data['Edad'].unique()
+    options=["Todos"] + list(data['Edad'].unique()), 
 )
 
-perfil_filtro = st.sidebar.multiselect(
+perfil_filtro = st.sidebar.selectbox(
     "Selecciona Perfil", 
-    options=data['perfil'].unique(), 
-    default=data['perfil'].unique()
+    options=["Todos"] + list(data['perfil'].unique()), 
 )
 
 # Filtro por rango de fechas
@@ -41,13 +42,17 @@ fecha_inicio, fecha_fin = st.sidebar.date_input(
     max_value=max_date
 )
 
-# Aplicar los filtros a todos los usuarios
+# Aplicar los filtros
 usuarios_filtrados = data[
-    (data['fecha'] >= pd.Timestamp(fecha_inicio)) &
-    (data['fecha'] <= pd.Timestamp(fecha_fin)) &
-    (data['Edad'].isin(edad_filtro)) & 
-    (data['perfil'].isin(perfil_filtro))
+    (data['fecha'] >= pd.Timestamp(fecha_inicio)) & 
+    (data['fecha'] <= pd.Timestamp(fecha_fin))
 ]
+
+if edad_filtro != "Todos":
+    usuarios_filtrados = usuarios_filtrados[usuarios_filtrados['Edad'] == edad_filtro]
+
+if perfil_filtro != "Todos":
+    usuarios_filtrados = usuarios_filtrados[usuarios_filtrados['perfil'] == perfil_filtro]
 
 # KPIs
 st.title("Tipos y comportamientos de usuarios")
