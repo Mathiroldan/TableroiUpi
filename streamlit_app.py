@@ -149,7 +149,7 @@ fig_pie_instrumento = px.pie(
 st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de línea para dinero invertido en cada instrumento a lo largo del tiempo
-st.("Dinero destinado a inversiones a lo largo del tiempo")
+st.subheader("Dinero destinado a inversiones a lo largo del tiempo")
 dinero_por_instrumento_tiempo = usuarios_filtrados.groupby(
     [usuarios_filtrados['fecha'].dt.to_period('M'), 'Instrumento']
 )['monto ARS'].sum().reset_index()
