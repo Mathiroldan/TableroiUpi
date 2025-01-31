@@ -90,7 +90,7 @@ fig_bar_franja = px.bar(
 st.plotly_chart(fig_bar_franja)
 
 # Gráfico de barra para perfil financiero
-st.subheader("Perfil financiero de los Usuarios")
+st.subheader("Perfil financiero de los usuarios")
 perfil_distribucion = usuarios_filtrados['perfil'].value_counts().reset_index()
 perfil_distribucion.columns = ['Perfil', 'Cantidad']
 fig_bar_perfil = px.bar(
@@ -100,7 +100,7 @@ fig_bar_perfil = px.bar(
 st.plotly_chart(fig_bar_perfil)
 
 # Gráfico de torta para objetivos
-st.subheader("Objetivos de los Usuarios")
+st.subheader("Objetivos de los usuarios")
 objetivos_distribucion = usuarios_filtrados['objetivo'].value_counts().reset_index()
 objetivos_distribucion.columns = ['Objetivo', 'Cantidad']
 fig_pie_objetivos = px.pie(
@@ -110,7 +110,7 @@ fig_pie_objetivos = px.pie(
 st.plotly_chart(fig_pie_objetivos)
 
 # Gráfico de treemap para razón de inversión
-st.subheader("Razón de Inversión")
+st.subheader("Razón de inversión")
 razon_distribucion = usuarios_filtrados['razon_inversion'].value_counts().reset_index()
 razon_distribucion.columns = ['Razon', 'Cantidad']
 
@@ -128,7 +128,7 @@ st.plotly_chart(fig_treemap_razon)
 
 
 # Gráfico de línea para dinero invertido a lo largo del año
-st.subheader("Dinero Invertido a lo Largo del Año")
+st.subheader("Dinero invertido a lo largo del año")
 dinero_por_mes = usuarios_filtrados.groupby(usuarios_filtrados['fecha'].dt.to_period('M'))['monto ARS'].sum().reset_index()
 dinero_por_mes.columns = ['Mes', 'Monto Total']
 dinero_por_mes['Mes'] = dinero_por_mes['Mes'].astype(str)
@@ -139,7 +139,7 @@ fig_line_dinero = px.line(
 st.plotly_chart(fig_line_dinero)
 
 # Gráfico de torta para la distribución por instrumento
-st.subheader("Distribución por Instrumento")
+st.subheader("Distribución por instrumento")
 instrumento_distribucion = usuarios_filtrados['Instrumento'].value_counts().reset_index()
 instrumento_distribucion.columns = ['Instrumento', 'Cantidad']
 fig_pie_instrumento = px.pie(
@@ -149,7 +149,7 @@ fig_pie_instrumento = px.pie(
 st.plotly_chart(fig_pie_instrumento)
 
 # Gráfico de línea para dinero invertido en cada instrumento a lo largo del tiempo
-st.subheader("Dinero Invertido por Inversión a lo largo del tiempo")
+st.subheader("Dinero destinado a inversiones a lo largo del tiempo")
 dinero_por_instrumento_tiempo = usuarios_filtrados.groupby(
     [usuarios_filtrados['fecha'].dt.to_period('M'), 'Instrumento']
 )['monto ARS'].sum().reset_index()
